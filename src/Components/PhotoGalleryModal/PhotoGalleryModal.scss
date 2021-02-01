@@ -1,0 +1,38 @@
+.photo-gallery__modal {
+  width: 1190px;
+  height: 700px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+
+  img {
+    display: block;
+    margin: 0 auto;
+    height: 100%;
+    width: auto;
+  }
+}
+
+.photo-gallery__background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  background-position: center;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  filter: blur(30px);
+}
+
+.photo-gallery__modal_overlay{
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+}

@@ -1,0 +1,27 @@
+.photo-gallery__main{
+  position: relative;
+}
+
+.photo-gallery__main_img{
+  display: block;
+  margin: 0 auto;
+  user-select: none;
+  position: relative;
+  z-index: 1;
+}
+
+.photo-gallery__main_scrolling{
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  cursor: pointer;
+
+  &.prev{
+    left: 0;
+  }
+
+  &.next{
+    right: 0;
+  }
+}

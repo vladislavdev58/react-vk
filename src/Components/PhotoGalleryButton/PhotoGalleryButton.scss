@@ -1,0 +1,14 @@
+.btn-gallery{
+  background: transparent;
+  cursor: pointer;
+  border: none;
+  outline: none;
+
+  &.prev img{
+    transform: rotate(180deg);
+  }
+
+  img{
+    width: 24px;
+  }
+}

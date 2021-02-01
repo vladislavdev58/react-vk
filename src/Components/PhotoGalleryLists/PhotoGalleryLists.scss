@@ -1,0 +1,25 @@
+.thumbs{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumbs__wrap {
+  width: 550px;
+  overflow: hidden;
+  position: relative;
+}
+
+.thumbs__list {
+  display: inline-block;
+  white-space: nowrap;
+
+  img {
+    border: 2px solid #fff;
+    cursor: pointer;
+
+    &.active {
+      border-color: #000;
+    }
+  }
+}
