@@ -15,13 +15,15 @@ const PhotoGalleryContainer = () => {
   //Общее количетсво постов
   const [maxElem, setMaxElem] = useState(100)
   // Количетсво рандомных постов
-  const [numElems, setNumElems] = useState(5)
+  const [numElems, setNumElems] = useState(60)
   // Индекс выбранной фотки
   const [activeIndexImg, setActiveIndexImg] = useState(0)
   // Отображать модалку или нет
   const [showModal, setShowModal] = useState(false)
   // Картинка для модалки
   const [modalImgSrc, setModalImgSrc] = useState(null)
+
+  const [positionThumb, setPositionThumb] = useState(0)
 
   const API_TOKEN = '1ea319591ea319591ea31959d41ed532da11ea31ea319597eb0e4eafedc40287e627631';
 
@@ -69,8 +71,6 @@ const PhotoGalleryContainer = () => {
     return arRandom
   }
 
-  let positionThumb = 0;
-
   // Тут листаем превьюшки
   const nextThumb = () => {
     let thumbWidth = document.querySelector('.thumbs__list').offsetWidth
@@ -78,17 +78,14 @@ const PhotoGalleryContainer = () => {
     let maxPosition = thumbWidth - thumbWrap
 
     if (positionThumb < maxPosition) {
-      positionThumb += 79
+      setPositionThumb(positionThumb + 79)
       document.querySelector('.thumbs__list').style.transform = 'translate3d(-' + positionThumb + 'px, 0px, 0px)'
     }
-    console.log('positionThumb', positionThumb)
-    console.log('maxPosition', maxPosition)
-    console.log(positionThumb < maxPosition)
   }
 
   const prevThumb = () => {
     if (positionThumb >= 1) {
-      positionThumb -= 79
+      setPositionThumb(positionThumb - 79)
       document.querySelector('.thumbs__list').style.transform = 'translate3d(-' + positionThumb + 'px, 0px, 0px)'
     }
     console.log(positionThumb)
@@ -96,11 +93,13 @@ const PhotoGalleryContainer = () => {
 
   // Тык некст слайдер
   const nextSlide = () => {
-    activeIndexImg < arPosts.length - 1 ? (
+    if (activeIndexImg < arPosts.length - 1) {
       setActiveIndexImg(activeIndexImg + 1)
-    ) : (
+    } else {
       setActiveIndexImg(0)
-    )
+      setPositionThumb(0)
+    }
+    nextThumb()
   }
 
   // Тык обратно слайдер
@@ -110,6 +109,7 @@ const PhotoGalleryContainer = () => {
     ) : (
       setActiveIndexImg(arPosts.length - 1)
     )
+    prevThumb()
   }
 
   // Открываем модалку
