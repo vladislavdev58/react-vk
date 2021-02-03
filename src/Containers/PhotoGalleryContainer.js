@@ -15,8 +15,6 @@ const PhotoGalleryContainer = () => {
   const [error, setError] = useState(null)
   //Общее количетсво постов
   const [maxElem, setMaxElem] = useState(100)
-  // Количетсво рандомных постов
-  const [numElems, setNumElems] = useState(50)
   // Индекс выбранной фотки
   const [activeIndexImg, setActiveIndexImg] = useState(0)
   // Отображать модалку или нет
@@ -41,7 +39,6 @@ const PhotoGalleryContainer = () => {
         setArPosts(randomPosts(json.response.items))
       )
       setIsLoaded(true)
-
     }).catch((e) => {
       setError('Ошибка ' + e.name + ":" + e.message)
     })
@@ -57,8 +54,9 @@ const PhotoGalleryContainer = () => {
 
   // Функция перемешивания массива
   const shuffle = array => {
-    if (numElems > 100) {
+    if (maxElem > 100) {
       setError('Вы указали отображаемое кол-во постов больше, чем у нас есть')
+      return array
     }
     let currentIndex = array.length, temporaryValue, randomIndex
 
@@ -78,7 +76,7 @@ const PhotoGalleryContainer = () => {
   // Достаем сколько надо элементов и возвращаем их
   const randomPosts = array => {
     const arShuffle = shuffle(array)
-    const arRandom = arShuffle.slice(0, numElems)
+    const arRandom = arShuffle.slice(0, maxElem)
     return arRandom
   }
 
@@ -113,11 +111,11 @@ const PhotoGalleryContainer = () => {
 
   // Тык обратно слайдер
   const prevSlide = () => {
-    activeIndexImg !== 0 ? (
+    if (activeIndexImg !== 0) {
       setActiveIndexImg(activeIndexImg - 1)
-    ) : (
+    } else {
       setActiveIndexImg(arPosts.length - 1)
-    )
+    }
     if (activeIndexImg === 0) {
       setPositionThumb((arPosts.length - 7) * 80)
     } else if (activeIndexImg < arPosts.length - 3) {
@@ -125,7 +123,7 @@ const PhotoGalleryContainer = () => {
     }
   }
 
-  // Открываем модалку
+// Открываем модалку
   const openModal = () => {
     arPosts[activeIndexImg].attachments[0].photo.photo_1280 ? (
       setModalImgSrc(arPosts[activeIndexImg].attachments[0].photo.photo_1280)
@@ -162,13 +160,11 @@ const PhotoGalleryContainer = () => {
             activeIndexImg={activeIndexImg}
             setActiveIndexImg={setActiveIndexImg}
           />
-          {showModal && modalImgSrc ? (
-            <PhotoGalleryModal
-              showModal={showModal}
-              modalImgSrc={modalImgSrc}
-              setShowModal={setShowModal}
-            />
-          ) : (null)}
+          <PhotoGalleryModal
+            showModal={showModal}
+            modalImgSrc={modalImgSrc}
+            setShowModal={setShowModal}
+          />
         </>
       )
     )
