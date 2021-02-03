@@ -1,8 +1,12 @@
 import React from 'react'
+import './PhotoGalleryItem.scss'
 
-const PhotoGalleryItem = ({src, text, id, activeIndexImg, setActiveIndexImg}) => {
+const PhotoGalleryItem = ({src, id, activeIndexImg, setActiveIndexImg}) => {
+  const backgroundImage = {
+    backgroundImage: 'url(' + src + ')'
+  }
   return(
-    <img onClick={() => setActiveIndexImg(id)} className={activeIndexImg === id ? 'active' : null} src={src} alt={text}/>
+    <div onClick={() => setActiveIndexImg(id)} className={`thumbs__list_item ${activeIndexImg === id ? 'active' : ""}`} style={backgroundImage}></div>
   )
 }
 

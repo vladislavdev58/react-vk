@@ -1,15 +1,16 @@
 import React, {useState, useEffect} from 'react'
 import fetchJsonp from 'fetch-jsonp'
-import PhotoGalleryList from "../Components/PhotoGalleryLists/PhotoGalleryList"
-import PhotoGalleryMain from "../Components/PhotoGalleryMain/PhotoGalleryMain"
-import PhotoGalleryButton from "../Components/PhotoGalleryButton/PhotoGalleryButton"
-import PhotoGalleryModal from "../Components/PhotoGalleryModal/PhotoGalleryModal"
+import PhotoGalleryMain from '../Components/PhotoGalleryMain/PhotoGalleryMain'
+import PhotoGalleryModal from '../Components/PhotoGalleryModal/PhotoGalleryModal'
+import PhotoGalleryThumb from '../Components/PhotoGalleryThumb/PhotoGalleryThumb'
+import Preloader from '../Components/Preloader/Preloader'
 
 const PhotoGalleryContainer = () => {
-
+  // Список пабликов
+  const [groupList, setGroupList] = useState([38691559, 45595714, 49131654])
   // Загруженные данные
-  const [arPosts, setArPosts] = useState(null)
-  // Статус загрузки
+  const [arPosts, setArPosts] = useState([])
+  // Статусы загрузки
   const [isLoaded, setIsLoaded] = useState(false)
   const [error, setError] = useState(null)
   //Общее количетсво постов
@@ -25,9 +26,8 @@ const PhotoGalleryContainer = () => {
 
   const [positionThumb, setPositionThumb] = useState(0)
 
-  const API_TOKEN = '1ea319591ea319591ea31959d41ed532da11ea31ea319597eb0e4eafedc40287e627631';
-
   useEffect(() => {
+    const API_TOKEN = '1ea319591ea319591ea31959d41ed532da11ea31ea319597eb0e4eafedc40287e627631';
     fetchJsonp(`http://api.vk.com/method/wall.get?owner_id=-38691559&count=${maxElem}&access_token=${API_TOKEN}&v=5.52`)
       .then(function (response) {
         return response.json()
@@ -46,22 +46,32 @@ const PhotoGalleryContainer = () => {
     })
   }, [maxElem]);
 
+  useEffect(() => {
+    const thumbs = document.querySelector('.thumbs__list')
+    if (thumbs) {
+      thumbs.style.transform = 'translate3d(-' + positionThumb + 'px, 0px, 0px)'
+    }
+  }, [positionThumb])
+
 
   // Функция перемешивания массива
   const shuffle = array => {
-    var currentIndex = array.length, temporaryValue, randomIndex;
+    if (numElems > groupList.length*100) {
+      setError('Вы указали отображаемое кол-во постов больше, чем у нас есть')
+    }
+    let currentIndex = array.length, temporaryValue, randomIndex
 
     while (0 !== currentIndex) {
 
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
+      randomIndex = Math.floor(Math.random() * currentIndex)
+      currentIndex -= 1
 
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
+      temporaryValue = array[currentIndex]
+      array[currentIndex] = array[randomIndex]
+      array[randomIndex] = temporaryValue
     }
 
-    return array;
+    return array
   }
 
   // Достаем сколько надо элементов и возвращаем их
@@ -78,17 +88,14 @@ const PhotoGalleryContainer = () => {
     let maxPosition = thumbWidth - thumbWrap
 
     if (positionThumb < maxPosition) {
-      setPositionThumb(positionThumb + 79)
-      document.querySelector('.thumbs__list').style.transform = 'translate3d(-' + positionThumb + 'px, 0px, 0px)'
+      setPositionThumb(positionThumb + 80)
     }
   }
 
   const prevThumb = () => {
-    if (positionThumb >= 1) {
-      setPositionThumb(positionThumb - 79)
-      document.querySelector('.thumbs__list').style.transform = 'translate3d(-' + positionThumb + 'px, 0px, 0px)'
+    if (positionThumb >= 0) {
+      setPositionThumb(positionThumb - 80)
     }
-    console.log(positionThumb)
   }
 
   // Тык некст слайдер
@@ -99,7 +106,8 @@ const PhotoGalleryContainer = () => {
       setActiveIndexImg(0)
       setPositionThumb(0)
     }
-    nextThumb()
+    if (activeIndexImg < arPosts.length - 4)
+      setPositionThumb((activeIndexImg - 2) * 80)
   }
 
   // Тык обратно слайдер
@@ -109,15 +117,19 @@ const PhotoGalleryContainer = () => {
     ) : (
       setActiveIndexImg(arPosts.length - 1)
     )
-    prevThumb()
+    if (activeIndexImg === 0) {
+      setPositionThumb((arPosts.length - 7) * 80)
+    } else if (activeIndexImg < arPosts.length - 3) {
+      setPositionThumb((activeIndexImg - 4) * 80)
+    }
   }
 
   // Открываем модалку
   const openModal = () => {
-    arPosts[activeIndexImg].attachments[0].photo.photo_1280 !== undefined ? (
+    arPosts[activeIndexImg].attachments[0].photo.photo_1280 ? (
       setModalImgSrc(arPosts[activeIndexImg].attachments[0].photo.photo_1280)
     ) : (
-      arPosts[activeIndexImg].attachments[0].photo.photo_807 !== undefined ? (
+      arPosts[activeIndexImg].attachments[0].photo.photo_807 ? (
         setModalImgSrc(arPosts[activeIndexImg].attachments[0].photo.photo_807)
       ) : (
         setModalImgSrc(arPosts[activeIndexImg].attachments[0].photo.photo_604)
@@ -127,38 +139,38 @@ const PhotoGalleryContainer = () => {
   }
 
   return (
-    <>
-      <PhotoGalleryMain
-        arPosts={arPosts}
-        activeIndexImg={activeIndexImg}
-        nextSlide={nextSlide}
-        prevSlide={prevSlide}
-        openModal={openModal}
-      />
-      <div className="thumbs">
-        <PhotoGalleryButton
-          onFunction={prevThumb}
-          className={'btn-gallery prev'}
-        />
-        <PhotoGalleryList
-          arPosts={arPosts}
-          isLoaded={isLoaded}
-          error={error}
-          randomPosts={randomPosts}
-          activeIndexImg={activeIndexImg}
-          setActiveIndexImg={setActiveIndexImg}
-        />
-        <PhotoGalleryButton
-          onFunction={nextThumb}
-          className={'btn-gallery next'}
-        />
-      </div>
-      <PhotoGalleryModal
-        showModal={showModal}
-        modalImgSrc={modalImgSrc}
-        setShowModal={setShowModal}
-      />
-    </>
+    error ? (
+      <p>{error}</p>
+    ) : (
+      !isLoaded ? (
+        <Preloader/>
+      ) : (
+        <>
+          <PhotoGalleryMain
+            arPosts={arPosts}
+            activeIndexImg={activeIndexImg}
+            nextSlide={nextSlide}
+            prevSlide={prevSlide}
+            openModal={openModal}
+          />
+          <PhotoGalleryThumb
+            prevThumb={prevThumb}
+            nextThumb={nextThumb}
+            positionThumb={positionThumb}
+            arPosts={arPosts}
+            activeIndexImg={activeIndexImg}
+            setActiveIndexImg={setActiveIndexImg}
+          />
+          {showModal && modalImgSrc ? (
+            <PhotoGalleryModal
+              showModal={showModal}
+              modalImgSrc={modalImgSrc}
+              setShowModal={setShowModal}
+            />
+          ) : (null)}
+        </>
+      )
+    )
   )
 }
 
