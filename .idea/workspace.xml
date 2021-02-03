@@ -2,16 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="80c0737a-bca5-4083-b032-837ce909e8ae" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Components/PhotoGalleryItem/PhotoGalleryItem.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Components/PhotoGalleryThumb/PhotoGalleryThumb.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintcache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/PhotoGalleryItem/PhotoGalleryItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/PhotoGalleryItem/PhotoGalleryItem.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/PhotoGalleryLists/PhotoGalleryList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/PhotoGalleryLists/PhotoGalleryList.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/PhotoGalleryLists/PhotoGalleryLists.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/PhotoGalleryLists/PhotoGalleryLists.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/PhotoGalleryMain/PhotoGalleryMain.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/PhotoGalleryMain/PhotoGalleryMain.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/PhotoGalleryModal/PhotoGalleryModal.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/PhotoGalleryModal/PhotoGalleryModal.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/PhotoGalleryModal/PhotoGalleryModal.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/PhotoGalleryModal/PhotoGalleryModal.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Containers/PhotoGalleryContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Containers/PhotoGalleryContainer.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -59,7 +51,7 @@
       <workItem from="1612000991522" duration="15049000" />
       <workItem from="1612166014256" duration="27374000" />
       <workItem from="1612258537440" duration="4545000" />
-      <workItem from="1612345869183" duration="13533000" />
+      <workItem from="1612345869183" duration="14024000" />
     </task>
     <servers />
   </component>

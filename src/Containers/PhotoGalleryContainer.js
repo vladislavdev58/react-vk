@@ -7,7 +7,7 @@ import Preloader from '../Components/Preloader/Preloader'
 
 const PhotoGalleryContainer = () => {
   // Список пабликов
-  const [groupList, setGroupList] = useState([38691559, 45595714, 49131654])
+  // const [groupList, setGroupList] = useState([38691559, 45595714, 49131654])
   // Загруженные данные
   const [arPosts, setArPosts] = useState([])
   // Статусы загрузки
@@ -16,7 +16,7 @@ const PhotoGalleryContainer = () => {
   //Общее количетсво постов
   const [maxElem, setMaxElem] = useState(100)
   // Количетсво рандомных постов
-  const [numElems, setNumElems] = useState(60)
+  const [numElems, setNumElems] = useState(50)
   // Индекс выбранной фотки
   const [activeIndexImg, setActiveIndexImg] = useState(0)
   // Отображать модалку или нет
@@ -27,21 +27,22 @@ const PhotoGalleryContainer = () => {
   const [positionThumb, setPositionThumb] = useState(0)
 
   useEffect(() => {
-    const API_TOKEN = '1ea319591ea319591ea31959d41ed532da11ea31ea319597eb0e4eafedc40287e627631';
+    const API_TOKEN = '1ea319591ea319591ea31959d41ed532da11ea31ea319597eb0e4eafedc40287e627631'
+
     fetchJsonp(`http://api.vk.com/method/wall.get?owner_id=-38691559&count=${maxElem}&access_token=${API_TOKEN}&v=5.52`)
-      .then(function (response) {
+      .then((response) => {
         return response.json()
-      }).then(function (json) {
+      }).then((json) => {
       console.log(json);
       // Проверяем есть ли ошибки от серва, если нет то записываем
-      json.error !== undefined ? (
+      json.error ? (
         setError(json.error.error_msg)
       ) : (
         setArPosts(randomPosts(json.response.items))
       )
       setIsLoaded(true)
 
-    }).catch(function (e) {
+    }).catch((e) => {
       setError('Ошибка ' + e.name + ":" + e.message)
     })
   }, [maxElem]);
@@ -56,7 +57,7 @@ const PhotoGalleryContainer = () => {
 
   // Функция перемешивания массива
   const shuffle = array => {
-    if (numElems > groupList.length*100) {
+    if (numElems > 100) {
       setError('Вы указали отображаемое кол-во постов больше, чем у нас есть')
     }
     let currentIndex = array.length, temporaryValue, randomIndex
