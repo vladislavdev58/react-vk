@@ -14,7 +14,7 @@ const PhotoGalleryContainer = () => {
   const [isLoaded, setIsLoaded] = useState(false)
   const [error, setError] = useState(null)
   //Общее количетсво постов
-  const [maxElem, setMaxElem] = useState(100)
+  const [maxElem, setMaxElem] = useState(10)
   // Индекс выбранной фотки
   const [activeIndexImg, setActiveIndexImg] = useState(0)
   // Отображать модалку или нет
@@ -54,10 +54,6 @@ const PhotoGalleryContainer = () => {
 
   // Функция перемешивания массива
   const shuffle = array => {
-    if (maxElem > 100) {
-      setError('Вы указали отображаемое кол-во постов больше, чем у нас есть')
-      return array
-    }
     let currentIndex = array.length, temporaryValue, randomIndex
 
     while (0 !== currentIndex) {
@@ -75,6 +71,9 @@ const PhotoGalleryContainer = () => {
 
   // Достаем сколько надо элементов и возвращаем их
   const randomPosts = array => {
+    if (maxElem > 100) {
+      setError('Вы указали отображаемое кол-во постов больше, чем у нас есть')
+    }
     const arShuffle = shuffle(array)
     const arRandom = arShuffle.slice(0, maxElem)
     return arRandom
