@@ -4,8 +4,6 @@
     <list default="true" id="80c0737a-bca5-4083-b032-837ce909e8ae" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.eslintcache" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintcache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/PhotoGalleryLists/PhotoGalleryList.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/PhotoGalleryLists/PhotoGalleryList.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Components/PhotoGalleryMain/PhotoGalleryMain.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Components/PhotoGalleryMain/PhotoGalleryMain.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Containers/PhotoGalleryContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Containers/PhotoGalleryContainer.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
