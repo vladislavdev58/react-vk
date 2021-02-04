@@ -39,22 +39,21 @@ const PhotoGalleryContainer = () => {
           const data = await response.json()
           // Проверяем есть ли ошибка от серва, если нет, то записываем
           if (data.error) {
-            setError(data.error.error_msg)
-            break;
-          } else {
-            // Создаем переменную и отправляем в функцию перемешивания.
-            // На выходе получаем кол-во постов указанной в переменной lengthElem
-            let arRandom = randomPosts(data.response.items, lengthElem)
-            // Записываем их в общий массив
-            arGeneral = await [...arGeneral, ...arRandom]
+            return setError(data.error.error_msg)
           }
+          // Создаем переменную и отправляем в функцию перемешивания.
+          // На выходе получаем кол-во постов указанной в переменной lengthElem
+          let arRandom = randomPosts(data.response.items, lengthElem)
+          // Записываем их в общий массив
+          arGeneral = await [...arGeneral, ...arRandom]
         } catch (e) {
           setError(e.message)
         }
       }
-      // После того как мы рандомно достали элементы, перемешиваем еще раз, т.к по группам они последовательно идут.
-      // И убираем лишние, если больше, чем просим
+
       if (arGeneral.length) {
+        // После того как мы рандомно достали элементы, перемешиваем еще раз, т.к по группам они последовательно идут.
+        // И убираем лишние, если больше, чем просим
         const arFormed = randomPosts(arGeneral, maxElem)
         setArPosts(arFormed)
         setIsLoaded(true)
@@ -66,7 +65,7 @@ const PhotoGalleryContainer = () => {
     }
 
     fetchData()
-  }, [groupList, maxElem]);
+  }, [groupList, maxElem])
 
   useEffect(() => {
     const thumbs = document.querySelector('.thumbs__list')
