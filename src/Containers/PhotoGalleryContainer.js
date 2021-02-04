@@ -5,6 +5,10 @@ import PhotoGalleryModal from '../Components/PhotoGalleryModal/PhotoGalleryModal
 import PhotoGalleryThumb from '../Components/PhotoGalleryThumb/PhotoGalleryThumb'
 import Preloader from '../Components/Preloader/Preloader'
 
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// У меня есть две ошибки. И они говорят, что я не использую setGroupList и setMaxElem. Решения не нашел.
+// Так-же ругается на то что в зависимости эффекта нет двух функций. Но они как бы там и нее нужны О_о
+
 const PhotoGalleryContainer = () => {
   // Список пабликов
   const [groupList, setGroupList] = useState([38691559, 45595714, 133437900, 153863364])
@@ -14,7 +18,7 @@ const PhotoGalleryContainer = () => {
   const [isLoaded, setIsLoaded] = useState(false)
   const [error, setError] = useState(null)
   //Общее количетсво постов
-  const [maxElem, setMaxElem] = useState(228)
+  const [maxElem, setMaxElem] = useState(100)
   // Индекс выбранной фотки
   const [activeIndexImg, setActiveIndexImg] = useState(0)
   // Отображать модалку или нет
@@ -57,7 +61,7 @@ const PhotoGalleryContainer = () => {
         const arFormed = randomPosts(arGeneral, maxElem)
         setArPosts(arFormed)
         setIsLoaded(true)
-        // Уведомление что постов не хватило =)
+        // Уведомление, если постов не хватило =)
         checkLengthPosts(arFormed)
         // Посмотреть что выводим
         console.log('Отображаемые:', arFormed)
@@ -67,6 +71,7 @@ const PhotoGalleryContainer = () => {
     fetchData()
   }, [groupList, maxElem])
 
+  // Ну тут двигаем рамочку
   useEffect(() => {
     const thumbs = document.querySelector('.thumbs__list')
     if (thumbs) {
