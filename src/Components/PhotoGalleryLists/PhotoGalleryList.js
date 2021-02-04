@@ -1,6 +1,5 @@
 import React from 'react'
 import PhotoGalleryItem from '../PhotoGalleryItem/PhotoGalleryItem'
-import Preloader from '../Preloader/Preloader'
 import './PhotoGalleryLists.scss'
 
 const PhotoLists = ({arPosts, activeIndexImg, setActiveIndexImg}) => {

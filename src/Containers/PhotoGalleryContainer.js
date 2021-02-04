@@ -7,14 +7,14 @@ import Preloader from '../Components/Preloader/Preloader'
 
 const PhotoGalleryContainer = () => {
   // Список пабликов
-  // const [groupList, setGroupList] = useState([38691559, 45595714, 49131654])
+  const [groupList, setGroupList] = useState([38691559, 45595714, 133437900, 153863364])
   // Загруженные данные
   const [arPosts, setArPosts] = useState([])
   // Статусы загрузки
   const [isLoaded, setIsLoaded] = useState(false)
   const [error, setError] = useState(null)
   //Общее количетсво постов
-  const [maxElem, setMaxElem] = useState(10)
+  const [maxElem, setMaxElem] = useState(100)
   // Индекс выбранной фотки
   const [activeIndexImg, setActiveIndexImg] = useState(0)
   // Отображать модалку или нет
@@ -25,24 +25,39 @@ const PhotoGalleryContainer = () => {
   const [positionThumb, setPositionThumb] = useState(0)
 
   useEffect(() => {
-    const API_TOKEN = '1ea319591ea319591ea31959d41ed532da11ea31ea319597eb0e4eafedc40287e627631'
-
-    fetchJsonp(`http://api.vk.com/method/wall.get?owner_id=-38691559&count=${maxElem}&access_token=${API_TOKEN}&v=5.52`)
-      .then((response) => {
-        return response.json()
-      }).then((json) => {
-      console.log(json);
-      // Проверяем есть ли ошибки от серва, если нет то записываем
-      json.error ? (
-        setError(json.error.error_msg)
-      ) : (
-        setArPosts(randomPosts(json.response.items))
-      )
+    async function fetchData() {
+      // Считаем сколько с одной загрузки нужно взять элементов
+      let lengthElem = Math.ceil(maxElem / groupList.length)
+      // Создаем массив постов
+      let arGeneral = []
+      const API_TOKEN = '1ea319591ea319591ea31959d41ed532da11ea31ea319597eb0e4eafedc40287e627631'
+      // Цикл для перебора групп
+      for (const group of groupList) {
+        try {
+          const response = await fetchJsonp(`http://api.vk.com/method/wall.get?owner_id=-${group}&count=100&access_token=${API_TOKEN}&v=5.52`)
+          const data = await response.json()
+          // Создаем переменную и отправляем в функцию перемешивания.
+          // На выходе получаем кол-во постов указанной в переменной lengthElem
+          let arRandom = randomPosts(data.response.items, lengthElem)
+          // Записываем их в общий массив
+          arGeneral = await [...arGeneral, ...arRandom]
+        } catch (e) {
+          setError(e.message)
+        }
+      }
+      // После того как мы рандомно достали элементы, перемешиваем еще раз, т.к по группам они последовательно идут.
+      // И убираем лишние, если больше, чем просим
+      const arFormed = randomPosts(arGeneral, maxElem)
+      setArPosts(arFormed)
       setIsLoaded(true)
-    }).catch((e) => {
-      setError('Ошибка ' + e.name + ":" + e.message)
-    })
-  }, [maxElem]);
+      // Уведомление что постов не хватило =)
+      checkLengthPosts(arFormed)
+      // Посмотреть что выводим
+      console.log('Отображаемые:', arGeneral)
+    }
+
+    fetchData()
+  }, [groupList, maxElem]);
 
   useEffect(() => {
     const thumbs = document.querySelector('.thumbs__list')
@@ -70,13 +85,25 @@ const PhotoGalleryContainer = () => {
   }
 
   // Достаем сколько надо элементов и возвращаем их
-  const randomPosts = array => {
-    if (maxElem > 100) {
+  const randomPosts = (array, lengthElem) => {
+    if (lengthElem > groupList.length*100) {
       setError('Вы указали отображаемое кол-во постов больше, чем у нас есть')
     }
-    const arShuffle = shuffle(array)
-    const arRandom = arShuffle.slice(0, maxElem)
+    // Проверяем посты на фотки, если нет, то убираем
+    const validAr = array.filter(item => item.attachments[0].type === 'photo')
+    // Перемешиваем
+    const arShuffle = shuffle(validAr)
+    // Выбираем с начала сколько указали
+    const arRandom = arShuffle.slice(0, lengthElem)
     return arRandom
+  }
+
+  // Уведомляем, если постов меньше, чем хотелось бы
+  const checkLengthPosts = (array) =>{
+    if (array.length < maxElem){
+      const diff = maxElem - array.length
+      alert(`Кол-во постов не прошедшие проверку: ${diff}`)
+    }
   }
 
   // Тут листаем превьюшки
